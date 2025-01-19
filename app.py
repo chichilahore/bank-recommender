@@ -2,7 +2,7 @@ from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///mi_base_de_datos.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///back-recommender.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
@@ -31,18 +31,21 @@ class RequisitoLaboral(db.Model):
     antiguedad_minima = db.Column(db.Integer, nullable=False)
     tipo_contrato = db.Column(db.String(50), nullable=False)
 
+# Modelo Vinculacion
 class Vinculacion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     producto_id = db.Column(db.Integer, db.ForeignKey("producto.id"), nullable=False)
     seguros = db.Column(db.String(100))
     domiciliacion_nomina = db.Column(db.Boolean, nullable=False)
 
+# Modelo Cliente
 class Cliente(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     telefono = db.Column(db.String(20))
 
+# Modelo Solicitud
 class Solicitud(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cliente_id = db.Column(db.Integer, db.ForeignKey("cliente.id"), nullable=False)
